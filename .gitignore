@@ -1,0 +1,55 @@
+# Ignore environment variables files
+.env
+.env.local
+.env.*.local
+
+# Composer dependencies (exclude vendor folder where PHP libraries are installed)
+vendor/
+
+# Log files
+*.log
+
+# Operating System specific files
+.DS_Store
+Thumbs.db
+
+# IDE and editor-specific files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# PHPUnit/Code Coverage output
+coverage/
+phpunit.xml
+phpunit.xml.dist
+
+# Build directories for temporary files
+/build/
+*.tmp
+*.bak
+*.swp
+
+# Caches
+cache/
+
+# Docker files
+docker/mysql/*.sql
+docker/php/*.env
+docker-compose.override.yml
+
+# Nginx/Apache config
+*.conf
+
+# Composer lock file if you don't want to track it
+composer.lock
+
+# Ignore the database directory (if it's not tracked by Docker volumes)
+db_data/
+
+# Ignore node_modules (if you're using frontend tools like Node.js or npm)
+node_modules/
+
+# Ignore temporary files created by IDEs or editors
+*.swp
+*.swo
