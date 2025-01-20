@@ -23,7 +23,7 @@
                 <button type="submit">Отправить</button>
             </form>
             <p>
-                <a href="/login">Войти как администратор</a>
+                <a href="/login.php">Войти как администратор</a>
             </p>
         </body>
         </html>
