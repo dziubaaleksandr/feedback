@@ -22,6 +22,9 @@
 
                 <button type="submit">Отправить</button>
             </form>
+            <p>
+                <a href="/login">Войти как администратор</a>
+            </p>
         </body>
         </html>
     </xsl:template>
