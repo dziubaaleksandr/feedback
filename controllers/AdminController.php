@@ -1,15 +1,27 @@
 <?php
 require_once 'models/FeedbackModel.php';
+require_once 'models/UserModel.php';
 
 class AdminController {
     private $feedbackModel;
+    private $userModel;
 
     public function __construct($DB_NAME, $DB_USER, $DB_PASSWORD) {
         $pdo = new PDO('mysql:host=mysql-db;dbname=' . $DB_NAME, $DB_USER, $DB_PASSWORD);
         $this->feedbackModel = new FeedbackModel($pdo);
+        $this->userModel = new UserModel($pdo);
     }
 
     public function showLogin() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $user = $this->userModel->authenticate($_POST['username'], $_POST['password']);
+            if ($user) {
+                session_start();
+                $_SESSION['admin'] = true;
+                header('Location: /');
+                exit;
+            }
+        }
         $this->renderLoginView();
     }
 
