@@ -46,6 +46,7 @@ class AdminController {
 
         if (isset($_GET['delete'])) {
             $this->feedbackModel->deleteFeedback($_GET['delete']);
+            header('Location: /admin.php');
         }
 
         $feedbacks = $this->feedbackModel->getFeedback();
