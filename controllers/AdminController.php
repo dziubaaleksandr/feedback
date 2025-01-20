@@ -18,7 +18,7 @@ class AdminController {
             if ($user) {
                 session_start();
                 $_SESSION['admin'] = true;
-                header('Location: /');
+                header('Location: /admin.php');
                 exit;
             }
         }
@@ -37,5 +37,40 @@ class AdminController {
         echo $processor->transformToXml($xml);
     }
 
-    
+    public function showAdminPanel() {
+        session_start();
+        if (!isset($_SESSION['admin'])) {
+            header('Location: /login.php');
+            exit;
+        }
+
+        if (isset($_GET['delete'])) {
+            $this->feedbackModel->deleteFeedback($_GET['delete']);
+        }
+
+        $feedbacks = $this->feedbackModel->getFeedback();
+
+        $this->renderAdminView($feedbacks);
+    }
+
+    private function renderAdminView($feedbacks) {
+        $xsl = new DOMDocument();
+        $xsl->load('views/admin_panel.xsl');
+
+        $xml = new DOMDocument();
+        $feedbacksXML = '<feedbacks>';
+        foreach ($feedbacks as $feedback) {
+            $feedbacksXML .= '<feedback>';
+            foreach ($feedback as $key => $value) {
+                $feedbacksXML .= "<$key>" . htmlspecialchars($value) . "</$key>";
+            }
+            $feedbacksXML .= '</feedback>';
+        }
+        $feedbacksXML .= '</feedbacks>';
+
+        $xml->loadXML($feedbacksXML);
+        $processor = new XSLTProcessor();
+        $processor->importStylesheet($xsl);
+        echo $processor->transformToXml($xml);
+    }
 }

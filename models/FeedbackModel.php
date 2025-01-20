@@ -11,4 +11,18 @@ class FeedbackModel {
         $stmt->execute([$name, $email, $subject, $message]);
     }
 
+    public function getFeedback() {
+        $stmt = $this->pdo->prepare('SELECT * FROM feedback');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteFeedback($id) {
+        $stmt = $this->pdo->prepare('DELETE FROM feedback WHERE id = ?');
+        $stmt->execute([$id]);
+    }
+
+    public function countFeedback() {
+        return $this->pdo->query('SELECT COUNT(*) FROM feedback')->fetchColumn();
+    }
 }
