@@ -39,6 +39,11 @@
                     </xsl:for-each>
                 </tbody>
             </table>
+            <xsl:for-each select="feedbacks/pagination/page">
+                <a style="display: inline-block; margin-right: 10px; text-decoration: none;" href="?page={.}">
+                    <xsl:value-of select="." />
+                </a>
+            </xsl:for-each>
             <p>
                 <a href="/">Оставить отзыв</a>
             </p>

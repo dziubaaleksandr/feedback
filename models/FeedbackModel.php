@@ -11,7 +11,14 @@ class FeedbackModel {
         $stmt->execute([$name, $email, $subject, $message]);
     }
 
-    public function getFeedback() {
+    public function getFeedback($offset = null, $limit = null) {
+        if (isset($offset) && isset($limit)){
+            $stmt = $this->pdo->prepare('SELECT * FROM feedback LIMIT ?, ?');
+            $stmt->bindValue(1, $offset, PDO::PARAM_INT);
+            $stmt->bindValue(2, $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
         $stmt = $this->pdo->prepare('SELECT * FROM feedback');
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

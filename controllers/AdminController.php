@@ -37,6 +37,21 @@ class AdminController {
         echo $processor->transformToXml($xml);
     }
 
+    private function calculatePagination()
+    {
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $limit = 2;
+        $offset = ($page - 1) * $limit;
+        $feedbacks = $this->feedbackModel->getFeedback($offset, $limit);
+        $totalFeedback = $this->feedbackModel->countFeedback();
+        $totalPages = ceil($totalFeedback / $limit);
+        $pages = [];
+        for($i = 1; $i <= $totalPages; $i++){
+            $pages[] = $i;
+        }
+        return ['feedbacks'=>$feedbacks, 'pages'=>$pages];
+    }
+
     public function showAdminPanel() {
         session_start();
         if (!isset($_SESSION['admin'])) {
@@ -49,12 +64,13 @@ class AdminController {
             header('Location: /admin.php');
         }
 
-        $feedbacks = $this->feedbackModel->getFeedback();
+        $feedbacks = $this->calculatePagination()['feedbacks'];
+        $pages = $this->calculatePagination()['pages'];
 
-        $this->renderAdminView($feedbacks);
+        $this->renderAdminView($feedbacks, $pages);
     }
 
-    private function renderAdminView($feedbacks) {
+    private function renderAdminView($feedbacks, $pages) {
         $xsl = new DOMDocument();
         $xsl->load('views/admin_panel.xsl');
 
@@ -67,6 +83,11 @@ class AdminController {
             }
             $feedbacksXML .= '</feedback>';
         }
+        $feedbacksXML .= '<pagination>';
+        foreach ($pages as $page) {
+            $feedbacksXML .= "<page>$page</page>";
+        }
+        $feedbacksXML .= '</pagination>';
         $feedbacksXML .= '</feedbacks>';
 
         $xml->loadXML($feedbacksXML);
