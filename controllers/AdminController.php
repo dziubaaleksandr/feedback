@@ -40,7 +40,7 @@ class AdminController {
     private function calculatePagination()
     {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $limit = 2;
+        $limit = 10;
         $offset = ($page - 1) * $limit;
         $feedbacks = $this->feedbackModel->getFeedback($offset, $limit);
         $totalFeedback = $this->feedbackModel->countFeedback();
@@ -79,6 +79,11 @@ class AdminController {
         foreach ($feedbacks as $feedback) {
             $feedbacksXML .= '<feedback>';
             foreach ($feedback as $key => $value) {
+                if (!isset($value)) { continue; }
+                if ($key === 'file_path') {
+                    $feedbacksXML .= "<$key><![CDATA[<a href='$value' target='_blank'>Скачать файл</a>]]></$key>";
+                    continue;
+                }
                 $feedbacksXML .= "<$key>" . htmlspecialchars($value) . "</$key>";
             }
             $feedbacksXML .= '</feedback>';

@@ -6,9 +6,9 @@ class FeedbackModel {
         $this->pdo = $pdo;
     }
 
-    public function saveFeedback($name, $email, $subject, $message) {
-        $stmt = $this->pdo->prepare('INSERT INTO feedback (name, email, subject, message) VALUES (?, ?, ?, ?)');
-        $stmt->execute([$name, $email, $subject, $message]);
+    public function saveFeedback($name, $email, $subject, $message, $filePath) {
+        $stmt = $this->pdo->prepare('INSERT INTO feedback (name, email, subject, message, file_path) VALUES (?, ?, ?, ?, ?)');
+        $stmt->execute([$name, $email, $subject, $message, $filePath]);
     }
 
     public function getFeedback($offset = null, $limit = null) {

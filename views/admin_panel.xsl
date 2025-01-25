@@ -27,6 +27,14 @@
                             <td><xsl:value-of select="subject" /></td>
                             <td><xsl:value-of select="message" /></td>
                             <td>
+                                <xsl:choose>
+                                    <xsl:when test="file_path">
+                                        <xsl:value-of disable-output-escaping="yes" select="file_path" />
+                                    </xsl:when>
+                                    <xsl:otherwise>Нет файла</xsl:otherwise>
+                                </xsl:choose>
+                            </td>
+                            <td>
                                 <a>
                                     <xsl:attribute name="href">
                                         <xsl:text>?delete=</xsl:text>

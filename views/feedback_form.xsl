@@ -7,7 +7,7 @@
         </head>
         <body>
             <h1>Оставьте ваш отзыв</h1>
-            <form method="POST" action="">
+            <form method="POST" action="" enctype="multipart/form-data">
                 <label>Имя:</label>
                 <input type="text" name="name" required='true'/><br />
 
@@ -19,6 +19,9 @@
 
                 <label>Сообщение:</label>
                 <textarea name="message" required='true'></textarea><br />
+
+                <label>Загрузить файл (до 1 МБ):</label>
+                <input type="file" name="file" accept="*/*" /><br />
 
                 <button type="submit">Отправить</button>
             </form>
