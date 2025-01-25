@@ -13,15 +13,15 @@ class AdminController {
     }
 
     public function showLogin() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user = $this->userModel->authenticate($_POST['username'], $_POST['password']);
-            if ($user) {
-                session_start();
-                $_SESSION['admin'] = true;
-                header('Location: /admin.php');
-                exit;
-            }
-        }
+        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        //     $user = $this->userModel->authenticate($_POST['username'], $_POST['password']);
+        //     if ($user) {
+        //         session_start();
+        //         $_SESSION['admin'] = true;
+        //         header('Location: /admin.php');
+        //         exit;
+        //     }
+        // }
         $this->renderLoginView();
     }
 
@@ -94,5 +94,25 @@ class AdminController {
         $processor = new XSLTProcessor();
         $processor->importStylesheet($xsl);
         echo $processor->transformToXml($xml);
+    }
+
+    public function validateLogin()
+    {
+        header('Content-Type: application/json');
+        $data = json_decode(file_get_contents('php://input'), true);
+        $username = $data['username'] ?? '';
+        $password = $data['password'] ?? '';
+
+        $user = $this->userModel->authenticate($username, $password);
+        if ($user) {
+            session_start();
+            $_SESSION['admin'] = true;
+            http_response_code(200);
+            echo json_encode(['message' => 'Успешный вход']);
+            exit;
+        }
+        http_response_code(401);
+        echo json_encode(['message' => 'Неверный логин или пароль']);
+        exit;
     }
 }
